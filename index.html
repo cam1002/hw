@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>贵金属回收价格实时报价</title>
+  <style>
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      margin: 0;
+      padding: 15px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+    .current-time {
+      text-align: center;
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+    .price-table th, .price-table td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    .price-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .price-table tr:hover {
+      background-color: #f9f9f9;
+    }
+    .contact-section {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .contact-info {
+      flex: 1;
+      min-width: 200px;
+    }
+    .contact-info h3 {
+      color: #d4af37;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .qr-code {
+      flex: 0 0 auto;
+      text-align: center;
+    }
+    .qr-code img {
+      max-width: 120px;
+      height: auto;
+    }
+    @media (max-width: 600px) {
+      .price-table {
+        font-size: 14px;
+      }
+      .price-table th, .price-table td {
+        padding: 8px 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>贵金属回收价格实时报价</h1>
+    <div class="current-time" id="current-time">更新时间：加载中...</div>
+
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th>品种</th>
+          <th>最新价(元/克)</th>
+          <th>回收价(元/克)</th>
+          <th>减幅(元/克)</th>
+          <th>报价时间</th>
+        </tr>
+      </thead>
+      <tbody id="price-data">
+        <tr><td colspan="5">加载中...</td></tr>
+      </tbody>
+    </table>
+
+    <div class="contact-section">
+      <div class="contact-info">
+        <h3>联系方式</h3>
+        <p><strong>电话:</strong> 121212</p>
+        <p><strong>微信:</strong> 12121221</p>
+        <p><strong>地址:</strong> 淇县鑫祥苑西200米汇旺寄卖行</p>
+      </div>
+
+      <div class="qr-code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://example.com/contact" alt="联系二维码">
+        <p>微信扫码联系</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData() {
+      try {
+        const timestamp = new Date().getTime();
+        
+        // 使用CORS Anywhere代理
+        // const res = await fetch(`https://cors-anywhere.herokuapp.com/corsdemo/https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
+        // const res = await fetch(`https://cors-proxy.htmldriven.com/?url=https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
+        // const res = await fetch(`https://api.allorigins.win/raw?url=https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
+        const res = await fetch(`https://web-production-eb4f1.up.railway.app/https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
+        
+        if (!res.ok) {
+          throw new Error(`网络请求失败，状态码: ${res.status}`);
+        }
+        
+        const textData = await res.text();
+        const dataArray = textData.split(',');
+        
+        // 验证数据格式
+        if (dataArray.length < 16 || !dataArray[0].includes('price')) {
+          throw new Error('返回数据格式不正确');
+        }
+        
+        // 解析数据
+        const prices = {
+          "黄金": {
+            sell: parseFloat(dataArray[2]),  // 最新价
+            recycle: parseFloat(dataArray[1]) // 回收价
+          },
+          "白银": {
+            sell: parseFloat(dataArray[4]),  // 最新价
+            recycle: parseFloat(dataArray[3]) // 回收价
+          },
+          "铂金": {
+            sell: parseFloat(dataArray[6]),  // 最新价
+            recycle: parseFloat(dataArray[5]) // 回收价
+          },
+          "钯金": {
+            sell: parseFloat(dataArray[8]),  // 最新价
+            recycle: parseFloat(dataArray[7]) // 回收价
+          }
+        };
+        
+        const updateTime = dataArray[15]; // 报价时间
+        
+        // 更新表格
+        const tbody = document.getElementById("price-data");
+        tbody.innerHTML = "";
+        
+        Object.entries(prices).forEach(([name, price]) => {
+          const deduction = (price.sell - price.recycle).toFixed(2);
+          
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${name}</td>
+            <td>${price.sell.toFixed(2)}</td>
+            <td>${price.recycle.toFixed(2)}</td>
+            <td>${deduction}</td>
+            <td>${updateTime}</td>
+          `;
+          tbody.appendChild(row);
+        });
+        
+        // 更新时间显示
+        document.getElementById("current-time").innerText = 
+          `更新时间：${new Date().toLocaleString()} (数据时间: ${updateTime})`;
+          
+      } catch (err) {
+        console.error("获取数据失败:", err);
+        document.getElementById("price-data").innerHTML = `
+          <tr><td colspan="5">数据加载失败: ${err.message}</td></tr>
+        `;
+        document.getElementById("current-time").innerText = "更新时间：加载失败";
+      }
+    }
+
+    // 初始加载
+    fetchData();
+    // 每分钟刷新一次
+    setInterval(fetchData, 60000);
+  </script>
+</body>
+</html>
