@@ -125,11 +125,7 @@
       try {
         const timestamp = new Date().getTime();
         
-        // 使用CORS Anywhere代理
-        // const res = await fetch(`https://cors-anywhere.herokuapp.com/corsdemo/https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
-        // const res = await fetch(`https://cors-proxy.htmldriven.com/?url=https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
-        // const res = await fetch(`https://api.allorigins.win/raw?url=https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
-        const res = await fetch(`https://web-production-eb4f1.up.railway.app/https://www.hn-rtj.cn/admin/get_price5.php?t=${timestamp}`);
+        const res = await fetch(`http://106.13.33.20:82/api/market-data`);
         
         if (!res.ok) {
           throw new Error(`网络请求失败，状态码: ${res.status}`);
@@ -142,7 +138,10 @@
         if (dataArray.length < 16 || !dataArray[0].includes('price')) {
           throw new Error('返回数据格式不正确');
         }
-        
+
+
+        console.log('dataArray')
+        console.log(dataArray)
         // 解析数据
         const prices = {
           "黄金": {
@@ -163,14 +162,14 @@
           }
         };
         
-        const updateTime = dataArray[15]; // 报价时间
+        const updateTime = dataArray[16]; // 报价时间
         
         // 更新表格
         const tbody = document.getElementById("price-data");
         tbody.innerHTML = "";
         
         Object.entries(prices).forEach(([name, price]) => {
-          const deduction = (price.sell - price.recycle).toFixed(2);
+          const deduction = 6;
           
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -198,8 +197,8 @@
 
     // 初始加载
     fetchData();
-    // 每分钟刷新一次
-    setInterval(fetchData, 60000);
+    // 每3秒刷新一次
+    setInterval(fetchData, 3000);
   </script>
 </body>
 </html>
