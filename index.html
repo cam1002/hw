@@ -163,43 +163,43 @@
         var by = (parseFloat(dataArray[4])) + 2;   //白银销售价
         var byhs = (parseFloat(dataArray[3])) - 2; //白银回收价
 
-        var ss = (parseFloat(dataArray[11])) + 2; // 首饰 回收价
-        var sshs = (parseFloat(dataArray[11])) - 2; // 首饰 回收价
+        var ss = ((parseFloat(dataArray[11])) + 20).toFixed(2); // 首饰 销售
+        var sshs = ((parseFloat(dataArray[11])) - 15).toFixed(2); // 首饰 回收价
 
-        var k18 = (parseFloat(dataArray[12])) + 2; // 18K 销售价
-        var k18hs = (parseFloat(dataArray[12])) - 2; // 18K 回收价
+        var k18 = ((parseFloat(dataArray[12])) + 30).toFixed(2); // 18K 销售价
+        var k18hs = ((parseFloat(dataArray[12])) - 30).toFixed(2); // 18K 回收价
 
-        var Pt950 = (parseFloat(dataArray[13])) + 2; // Pt950 销售价
-        var Pt950hs = (parseFloat(dataArray[13])) - 2; // Pt950 回收价
+        var Pt950 = ((parseFloat(dataArray[13])) + 30).toFixed(2); // Pt950 销售价
+        var Pt950hs = ((parseFloat(dataArray[13])) - 30).toFixed(2); // Pt950 回收价
 
-        var Pd990 = (parseFloat(dataArray[14])) + 2; // Pd990 销售价
-        var Pd990hs = (parseFloat(dataArray[14])) - 2; // Pd990 回收价
+        var Pd990 = ((parseFloat(dataArray[14])) + 30).toFixed(2); // Pd990 销售价
+        var Pd990hs = ((parseFloat(dataArray[14])) - 30).toFixed(2); // Pd990 回收价
 
-        var ag925 = (parseFloat(dataArray[15])) + 2; // Ag925 销售价 +20
-        var ag925hs = (parseFloat(dataArray[15])) - 2; // Ag925 回收价
+        var ag925 = ((parseFloat(dataArray[15])) + 8).toFixed(2); // Ag925 销售价
+        var ag925hs = ((parseFloat(dataArray[15])) - 3).toFixed(2); // Ag925 回收价
         // 解析数据
         const prices = {
-          "黄金": {
-            sell: hj,  // 最新价
-            recycle: hjhs // 回收价
-          },
-          "白银": {
-            sell: by,
-            recycle: byhs
-          },
-          "铂金": {
-            sell: parseFloat(dataArray[6]),
-            recycle: parseFloat(dataArray[5])
-          },
-          "钯金": {
-            sell: parseFloat(dataArray[8]),
-            recycle: parseFloat(dataArray[7])
-          },
+          // "黄金": {
+          //   sell: hj,  // 最新价
+          //   recycle: hjhs // 回收价
+          // },
+          // "白银": {
+          //   sell: by,
+          //   recycle: byhs
+          // },
+          // "铂金": {
+          //   sell: parseFloat(dataArray[6]),
+          //   recycle: parseFloat(dataArray[5])
+          // },
+          // "钯金": {
+          //   sell: parseFloat(dataArray[8]),
+          //   recycle: parseFloat(dataArray[7])
+          // },
           // "港金": {
           //   sell: parseFloat(dataArray[10]),  // 销售价
           //   recycle: parseFloat(dataArray[9]) // 回收价
           // },
-          "首饰": {
+          "黄金": { //原来是首饰
             sell: ss,  // 最新价
             recycle: sshs // 回收价
           },
@@ -207,15 +207,15 @@
             sell: k18,  // 最新价
             recycle: k18hs // 回收价
           },
-          "Pt950": {
+          "Pt950（铂金）": {
             sell: Pt950,  // 最新价
             recycle: Pt950hs // 回收价
           },
-          "Pd990": {
+          "Pd990（钯金）": {
             sell: Pd990,  // 最新价
             recycle: Pd990hs // 回收价
           },
-          "Ag925": {
+          "Ag925（白银）": {
             sell: ag925,  // 最新价
             recycle: ag925hs // 回收价
           }
