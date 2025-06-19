@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>贵金属回收价格实时报价</title>
+  <title>汇旺寄卖行回收价格实时报价</title>
   <style>
     body {
       font-family: 'Microsoft YaHei', Arial, sans-serif;
       margin: 0;
       padding: 15px;
-      background-color: #f5f5f5;
+      background-color: #ffffff;
       color: #333;
     }
     .container {
       max-width: 100%;
       margin: 0 auto;
-      background-color: #fff;
+      background-color: #696f72; /* 浅灰色 */
+/*      background-color: #fff;*/
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: #ffffff;
     }
     h1 {
       color: #d4af37;
@@ -28,7 +30,7 @@
     }
     .current-time {
       text-align: center;
-      color: #666;
+      color: ##ae2d1c;
       margin-bottom: 15px;
       font-size: 14px;
     }
@@ -36,6 +38,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 15px;
+      color: #ffffff;
     }
     .price-table th, .price-table td {
       padding: 10px;
@@ -49,6 +52,19 @@
     .price-table tr:hover {
       background-color: #f9f9f9;
     }
+    .price-table th {
+    background-color: #000; /* 黑色背景 */
+    color: #fff; /* 白色文字 */
+    font-weight: bold;
+    padding: 12px 10px; /* 稍微加大内边距 */
+    text-align: center;
+    border-bottom: 2px solid #333; /* 深灰色底部边框 */
+    letter-spacing: 1px; /* 字间距微调（可选） */
+  }
+  .price-table {
+    border-collapse: separate; /* 使边框分离，增强立体感 */
+    border-spacing: 0; /* 避免单元格间距 */
+  }
     .contact-section {
       margin-top: 25px;
       padding-top: 15px;
@@ -86,7 +102,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>贵金属回收价格实时报价</h1>
+    <h1>汇旺寄卖行回收价格实时报价</h1>
     <div class="current-time" id="current-time">更新时间：加载中...</div>
 
     <table class="price-table">
@@ -94,7 +110,7 @@
         <tr>
           <th>品种</th>
           <th>旧料销售(元/克)</th>
-          <th>回收价(元/克)</th>
+          <th>回购(元/克)</th>
           <th>报价时间</th>
         </tr>
       </thead>
@@ -107,7 +123,7 @@
       <div class="contact-info">
         <h3>联系方式</h3>
         <p><strong>电话:</strong> 13643923935</p>
-        <p><strong>微信:</strong> 13643923935</p>
+        <p><strong>备用电话:</strong> 17630399333</p>
         <p><strong>地址:</strong> 淇县鑫祥苑西200米汇旺寄卖行</p>
       </div>
 
@@ -140,47 +156,68 @@
 
         console.log('dataArray')
         console.log(dataArray)
+
+        var hj = (parseFloat(dataArray[2])) + 15;  //黄金销售价
+        var hjhs = (parseFloat(dataArray[2])) - 20; //黄金回收价
+
+        var by = (parseFloat(dataArray[4])) + 2;   //白银销售价
+        var byhs = (parseFloat(dataArray[3])) - 2; //白银回收价
+
+        var ss = (parseFloat(dataArray[11])) + 2; // 首饰 回收价
+        var sshs = (parseFloat(dataArray[11])) - 2; // 首饰 回收价
+
+        var k18 = (parseFloat(dataArray[12])) + 2; // 18K 销售价
+        var k18hs = (parseFloat(dataArray[12])) - 2; // 18K 回收价
+
+        var Pt950 = (parseFloat(dataArray[13])) + 2; // Pt950 销售价
+        var Pt950hs = (parseFloat(dataArray[13])) - 2; // Pt950 回收价
+
+        var Pd990 = (parseFloat(dataArray[14])) + 2; // Pd990 销售价
+        var Pd990hs = (parseFloat(dataArray[14])) - 2; // Pd990 回收价
+
+        var ag925 = (parseFloat(dataArray[15])) + 2; // Ag925 销售价 +20
+        var ag925hs = (parseFloat(dataArray[15])) - 2; // Ag925 回收价
         // 解析数据
         const prices = {
           "黄金": {
-            sell: parseFloat(dataArray[2]),  // 最新价
-            recycle: parseFloat(dataArray[1]) // 回收价
+            sell: hj,  // 最新价
+            recycle: hjhs // 回收价
           },
           "白银": {
-            sell: parseFloat(dataArray[4]),  // 最新价
-            recycle: parseFloat(dataArray[3]) // 回收价
+            sell: by,
+            recycle: byhs
           },
           "铂金": {
-            sell: parseFloat(dataArray[6]),  // 最新价
-            recycle: parseFloat(dataArray[5]) // 回收价
+            sell: parseFloat(dataArray[6]),
+            recycle: parseFloat(dataArray[5])
           },
           "钯金": {
-            sell: parseFloat(dataArray[8]),  // 最新价
-            recycle: parseFloat(dataArray[7]) // 回收价
+            sell: parseFloat(dataArray[8]),
+            recycle: parseFloat(dataArray[7])
           },
           "港金": {
-            sell: parseFloat(dataArray[10]),  // 最新价
+            sell: parseFloat(dataArray[10]),  // 销售价
             recycle: parseFloat(dataArray[9]) // 回收价
           },
           "首饰": {
-            sell: '-',  // 最新价
-            recycle: parseFloat(dataArray[11]) // 回收价
+            sell: ss,  // 最新价
+            recycle: sshs // 回收价
           },
           "18K（黄金）": {
-            sell: '-',  // 最新价
-            recycle: parseFloat(dataArray[12]) // 回收价
+            sell: k18,  // 最新价
+            recycle: k18hs // 回收价
           },
           "Pt950": {
-            sell: '-',  // 最新价
-            recycle: parseFloat(dataArray[13]) // 回收价
+            sell: Pt950,  // 最新价
+            recycle: Pt950hs // 回收价
           },
           "Pd990": {
-            sell: '-',  // 最新价
-            recycle: parseFloat(dataArray[14]) // 回收价
+            sell: Pd990,  // 最新价
+            recycle: Pd990hs // 回收价
           },
           "Ag925": {
-            sell: '-',  // 最新价
-            recycle: parseFloat(dataArray[15]) // 回收价
+            sell: ag925,  // 最新价
+            recycle: ag925hs // 回收价
           }
         };
         
@@ -191,15 +228,12 @@
         tbody.innerHTML = "";
         
         Object.entries(prices).forEach(([name, price]) => {
-          // const deduction = 6;
-          // var sell = (parseFloat(price.sell.toFixed(2))) + 20;
-          // var recycle = (parseFloat(price.recycle.toFixed(2))) - 10;
           const row = document.createElement("tr");
           // <td>${deduction}</td>
           row.innerHTML = `
-            <td>${name}</td>
-            <td>${price.sell}</td>
-            <td>${price.recycle}</td>
+            <td style="color: yellow;">${name}</td>
+            <td style="color: red;">${price.sell}</td>
+            <td style="color: #1cae2d;">${price.recycle}</td>
             <td>${updateTime}</td>
           `;
           tbody.appendChild(row);
