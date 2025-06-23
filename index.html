@@ -145,7 +145,7 @@
       try {
         const timestamp = new Date().getTime();
         
-        const res = await fetch(`http://106.13.33.20:82/api/market-data`);
+        const res = await fetch(`http://152.136.135.241:82/api/market-data`);
         
         if (!res.ok) {
           throw new Error(`网络请求失败，状态码: ${res.status}`);
@@ -261,7 +261,7 @@
     // 初始加载
     fetchData();
     // 每3秒刷新一次
-    setInterval(fetchData, 1000);
+    setInterval(fetchData, 3000);
   </script>
 </body>
 </html>
